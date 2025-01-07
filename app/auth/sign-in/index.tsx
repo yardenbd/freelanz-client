@@ -14,13 +14,20 @@ import { COLORS } from "../../../constants/Colors";
 import { PhoneSignIn } from "../../../components/PhoneSignIn/PhoneSignIn";
 import { AppleBtn } from "../../../components/AppleBtn/AppleBtn";
 import * as AppleAuthentication from "expo-apple-authentication";
+import { GoogleBtn } from "../../../components/GoogleBtn/GoogleBtn";
+import { Link } from "expo-router";
+import { useAppDispatch } from "../../../hooks/hooks";
+import { authenticateWithApple } from "../../../store/features/auth/actions";
 
 const Index = () => {
     const { t } = useTranslation();
+    const dispatch = useAppDispatch();
 
     const onAppleSignIn = async (
         credential: AppleAuthentication.AppleAuthenticationCredential
-    ) => {};
+    ) => {
+        await dispatch(authenticateWithApple(credential));
+    };
 
     return (
         <SafeAreaView>
@@ -50,7 +57,20 @@ const Index = () => {
                             <View style={styles.dash}></View>
                         </View>
                         <AppleBtn onAppleSignIn={onAppleSignIn} />
+                        <GoogleBtn onAppleSignIn={onAppleSignIn} />
                     </View>
+                    <Text style={{ color: COLORS.black, marginTop: "auto" }}>
+                        {t("dontHaveAccount")}{" "}
+                        <Link
+                            style={{
+                                color: COLORS.blue,
+                                textDecorationLine: "underline",
+                            }}
+                            href={"/"}
+                        >
+                            {t("signUp")}
+                        </Link>
+                    </Text>
                 </View>
             </TouchableWithoutFeedback>
         </SafeAreaView>

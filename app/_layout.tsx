@@ -13,7 +13,6 @@ export default function RootLayout() {
 
 const styles = StyleSheet.create({
     container: {
-        width: "100%",
-        paddingHorizontal: 25,
+        backgroundColor: "red",
     },
 });

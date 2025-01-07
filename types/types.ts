@@ -8,6 +8,12 @@ export interface Strength {
     description: string;
 }
 
+export interface IAuthentictedResponse {
+    user: User;
+    accessToken: string;
+    refreshToken: string;
+}
+
 export interface User {
     name: string;
     address: string;

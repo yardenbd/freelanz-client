@@ -10,7 +10,7 @@ const Index = () => {
     const router = useRouter();
     useEffect(() => {
         const tie = setTimeout(() => {
-            router.push("/welcome-screen");
+            router.push("/auth/enter-otp");
         }, 1000);
         return () => clearTimeout(tie);
     }, []);

@@ -7,5 +7,7 @@
     "phone": "טלפון",
     "phonePlaceholder": "הזן מספר טלפון",
     "sendOtp": "שלח קוד אימות",
-    "orSignInWith": "או התחבר באמצעות"
+    "orSignInWith": "או התחבר באמצעות",
+    "dontHaveAccount": "אין לך חשבון?",
+    "signUp": "הירשם"
 }

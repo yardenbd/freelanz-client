@@ -3,7 +3,10 @@ import * as SecureStore from "expo-secure-store";
 const ACCESS_TOKEN_KEY = "accessToken";
 const REFRESH_TOKEN_KEY = "refreshToken";
 
-export const saveToken = async (key: string, token: string): Promise<void> => {
+export const saveToken = async (
+    key: "accessToken" | "refreshToken",
+    token: string
+): Promise<void> => {
     try {
         await SecureStore.setItemAsync(key, token);
     } catch (error) {
@@ -11,7 +14,9 @@ export const saveToken = async (key: string, token: string): Promise<void> => {
     }
 };
 
-export const getToken = async (key: string): Promise<string | null> => {
+export const getToken = async (
+    key: "accessToken" | "refreshToken"
+): Promise<string | null> => {
     try {
         return await SecureStore.getItemAsync(key);
     } catch (error) {
