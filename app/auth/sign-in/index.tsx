@@ -30,7 +30,7 @@ const Index = () => {
     };
 
     return (
-        <SafeAreaView>
+        <SafeAreaView style={commonStyles.safeArea}>
             <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
                 <View
                     style={[

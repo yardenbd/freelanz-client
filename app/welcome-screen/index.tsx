@@ -9,7 +9,7 @@ const Index = () => {
     const { t } = useTranslation();
 
     return (
-        <SafeAreaView>
+        <SafeAreaView style={commonStyles.safeArea}>
             <View style={[commonStyles.container, styles.container]}>
                 <Text style={styles.welcomeText}>{t("welcomeText")}</Text>
                 <Text style={styles.subText}>{t("welcomeText")}</Text>

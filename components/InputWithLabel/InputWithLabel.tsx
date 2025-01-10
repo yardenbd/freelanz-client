@@ -52,6 +52,6 @@ const styles = StyleSheet.create({
     label: {
         color: COLORS.black,
         fontSize: 14,
-        fontWeight: 500,
+        fontWeight: 400,
     },
 });

@@ -10,7 +10,7 @@ const Index = () => {
     const router = useRouter();
     useEffect(() => {
         const tie = setTimeout(() => {
-            router.push("/auth/enter-otp");
+            router.push("/profile/skills");
         }, 1000);
         return () => clearTimeout(tie);
     }, []);

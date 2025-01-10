@@ -2,12 +2,28 @@ import { useRouter } from "expo-router";
 import React from "react";
 import { Pressable, StyleSheet } from "react-native";
 import Svg, { Path } from "react-native-svg";
+import { useSteps } from "../../context/StepsContext";
 
-export const BackwardsBtn = () => {
+interface IBackwardsBtnProps {
+    cancelStyles?: boolean;
+    fromSteps?: boolean;
+}
+
+export const BackwardsBtn: React.FC<IBackwardsBtnProps> = ({
+    cancelStyles,
+    fromSteps,
+}) => {
+    const { prevStep, currentStep } = useSteps();
+
     const router = useRouter();
     return (
-        <Pressable onPress={() => router.back()} style={styles.backLink}>
-            {" "}
+        <Pressable
+            onPress={() => {
+                // router.back();
+                if (fromSteps) prevStep();
+            }}
+            style={!cancelStyles && styles.backLink}
+        >
             <Svg width="24" height="24" viewBox="0 0 24 24" fill="none">
                 <Path
                     d="M9.57 5.93005L3.5 12.0001L9.57 18.0701"

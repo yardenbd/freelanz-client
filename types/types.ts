@@ -1,11 +1,9 @@
-export interface Skill {
-    id: string;
-    name: string;
-}
-
-export interface Strength {
-    id: string;
-    description: string;
+export interface ISkillOrStrength {
+    id: number;
+    he: string;
+    ru: string;
+    ar: string;
+    en: string;
 }
 
 export interface IAuthentictedResponse {
@@ -30,6 +28,6 @@ export interface User {
     createdAt: Date;
     updatedAt: Date;
     deletedAt: Date;
-    skills: Skill[];
-    strengths: Strength[];
+    skills: ISkillOrStrength[];
+    strengths: ISkillOrStrength[];
 }

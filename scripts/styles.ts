@@ -2,6 +2,25 @@ import { StyleSheet } from "react-native";
 import { COLORS } from "../constants/Colors";
 
 export const commonStyles = StyleSheet.create({
+    underscoreLink: {
+        textDecorationLine: "underline",
+        color: COLORS.blue,
+    },
+    largebtnText: { color: COLORS.white, textAlign: "center" },
+    greySubLabel: {
+        color: COLORS.grey,
+        fontSize: 16,
+        textAlign: "right",
+        fontWeight: 400,
+        marginTop: 10,
+    },
+    authLabel: {
+        color: COLORS.black,
+        fontSize: 36,
+        textAlign: "right",
+        fontWeight: 700,
+        marginTop: 30,
+    },
     input: {
         borderWidth: 1,
         borderColor: COLORS.greyBorder,
@@ -11,6 +30,7 @@ export const commonStyles = StyleSheet.create({
         borderRadius: 10,
         textAlign: "right",
     },
+    safeArea: { backgroundColor: COLORS.white },
     ssoBtn: {
         width: "100%",
         paddingVertical: 18,
@@ -39,5 +59,13 @@ export const commonStyles = StyleSheet.create({
         paddingHorizontal: 25,
         display: "flex",
         height: "100%",
+        backgroundColor: COLORS.white,
+    },
+    rightText: { textAlign: "right" },
+    mediumBlackText: {
+        fontSize: 24,
+        color: COLORS.black,
+        fontWeight: 700,
+        textAlign: "center",
     },
 });
