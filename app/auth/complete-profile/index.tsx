@@ -82,14 +82,13 @@ const Index = () => {
     );
 
     const onPress = async () => {
-        console.log(formData.dateOfBirth);
-        // const data = new FormData();
-        // for (const [key, value] of Object.entries(formData)) {
-        //     if (key === "profileImg") {
-        //         data.append("file", value);
-        //     } else data.append(key, value);
-        // }
-        // await dispatch(updateUser(data));
+        const data = new FormData();
+        for (const [key, value] of Object.entries(formData)) {
+            if (key === "profileImg") {
+                data.append("file", value);
+            } else data.append(key, value);
+        }
+        await dispatch(updateUser(data));
     };
     return (
         <View style={[commonStyles.container, { height: "100%" }]}>
