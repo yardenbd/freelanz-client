@@ -15,7 +15,7 @@ import { PrimaryButton } from "../../../components/PrimaryButton/PrimaryButton";
 import { useAppDispatch } from "../../../hooks/hooks";
 import { updateUser } from "../../../store/features/auth/actions";
 
-interface IFormDataState {
+export interface CompleteProfileState {
     profileImg: null | Partial<ImagePicker.ImagePickerAsset>;
     name: string;
     email: string;
@@ -24,7 +24,7 @@ interface IFormDataState {
 }
 
 const Index = () => {
-    const [formData, setFormData] = useState<IFormDataState>({
+    const [formData, setFormData] = useState<CompleteProfileState>({
         email: "",
         name: "",
         profileImg: null,
@@ -69,7 +69,10 @@ const Index = () => {
         }
     };
 
-    const handleChange = (value: string, propName: keyof IFormDataState) => {
+    const handleChange = (
+        value: string,
+        propName: keyof CompleteProfileState
+    ) => {
         console.log(propName, value);
         setFormData((prev) => {
             return { ...prev, [propName]: value };
@@ -82,13 +85,7 @@ const Index = () => {
     );
 
     const onPress = async () => {
-        const data = new FormData();
-        for (const [key, value] of Object.entries(formData)) {
-            if (key === "profileImg") {
-                data.append("file", value);
-            } else data.append(key, value);
-        }
-        await dispatch(updateUser(data));
+        await dispatch(updateUser(formData));
     };
     return (
         <View style={[commonStyles.container, { height: "100%" }]}>

@@ -5,27 +5,38 @@ import { useTranslation } from "react-i18next";
 import Svg, { Path, G, Defs, ClipPath, Rect } from "react-native-svg";
 import { COLORS } from "../../../constants/Colors";
 import { PrimaryButton } from "../../../components/PrimaryButton/PrimaryButton";
+import { useAppDispatch } from "../../../hooks/hooks";
+import { updateUser } from "../../../store/features/auth/actions";
+import { useRouter } from "expo-router";
 
 const Index = () => {
     const [selectedRole, setSelectedRole] = useState<string>("");
     const { t } = useTranslation();
+    const router = useRouter();
     const ROLES = [
         {
-            label: "business",
+            label: "Business",
             Icon: BusinessManIcon,
             description: t("businessDescription"),
         },
         {
-            label: "employee",
+            label: "Employee",
             Icon: FreelancerIcon,
             description: t("employeeDescription"),
         },
         {
-            label: "private",
+            label: "Private",
             Icon: PrivateIcon,
             description: t("privateDescription"),
         },
     ];
+
+    const dispatch = useAppDispatch();
+
+    const onPress = async () => {
+        await dispatch(updateUser({ type: selectedRole }));
+        router.push("/profile/documents");
+    };
 
     const rolesToRender = ROLES.map(({ Icon, description, label }) => (
         <Pressable
@@ -51,10 +62,8 @@ const Index = () => {
                 {t("roleDescription")}
             </Text>
             <View style={styles.roles}>{rolesToRender}</View>
-            <Pressable style={[commonStyles.largeBtn, { marginTop: "auto" }]}>
-                <Text style={commonStyles.largebtnText}>{t("continue")}</Text>
-            </Pressable>
-            <PrimaryButton label={t("continue")} onPress={() => {}} />
+
+            <PrimaryButton label={t("continue")} onPress={onPress} />
         </View>
     );
 };
@@ -84,7 +93,8 @@ const styles = StyleSheet.create({
         justifyContent: "flex-end",
         width: "100%",
         borderRadius: 15,
-        padding: 25,
+        paddingHorizontal: 15,
+        paddingVertical: 20,
         borderWidth: 1,
         borderColor: COLORS.greyBorder,
         gap: 25,

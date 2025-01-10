@@ -5,6 +5,8 @@ import { BackwardsBtn } from "../../components/BackwardsBtn/BackwardsBtn";
 import { ProfileProgressBar } from "../../components/ProfileProgressBar/ProfileProgressBar";
 import { commonStyles } from "../../scripts/styles";
 import { StepsProvider, useSteps } from "../../context/StepsContext";
+import { useAppSelector } from "../../hooks/hooks";
+import { RootState } from "../../store/store";
 
 const Layout = () => {
     return (
@@ -22,6 +24,8 @@ const Layout = () => {
 export default Layout;
 
 const TopbarElements: React.FC = () => {
+    const user = useAppSelector((state: RootState) => state.auth.user);
+    const isUserEmployee = user?.type === "Employee";
     const { prevStep } = useSteps();
     return (
         <View
@@ -29,12 +33,12 @@ const TopbarElements: React.FC = () => {
                 display: "flex",
                 flexDirection: "row",
                 gap: 20,
-                marginBottom: 35,
+                marginBottom: 30,
                 marginTop: 10,
             }}
         >
             <BackwardsBtn cancelStyles prevStep={prevStep} />
-            <ProfileProgressBar />
+            <ProfileProgressBar steps={isUserEmployee ? 5 : 2} />
         </View>
     );
 };

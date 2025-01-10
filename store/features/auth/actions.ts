@@ -1,8 +1,13 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import * as AppleAuthentication from "expo-apple-authentication";
-import { IAuthentictedResponse, User } from "../../../types/types";
+import {
+    IAuthentictedResponse,
+    UpdateUserData,
+    User,
+} from "../../../types/types";
 import { apiClient } from "../../../apiClient";
 import { deleteTokens, saveToken } from "../../../secureStorage";
+import { CompleteProfileState } from "../../../app/auth/complete-profile";
 
 export const authenticateWithApple = createAsyncThunk<
     User,
@@ -29,10 +34,16 @@ export const authenticateWithApple = createAsyncThunk<
     }
 );
 
-export const updateUser = createAsyncThunk<User, FormData>(
+export const updateUser = createAsyncThunk<User, UpdateUserData>(
     "auth/updateUser",
-    async (data: FormData, { rejectWithValue }) => {
+    async (data: UpdateUserData, { rejectWithValue }) => {
         try {
+            const formData = new FormData();
+            for (const [key, value] of Object.entries(data)) {
+                if (key === "profileImg") {
+                    formData.append("file", value);
+                } else formData.append(key, value);
+            }
             const response = await apiClient.patch<User>("/user", data, {
                 headers: {
                     "Content-Type": "multipart/form-data",

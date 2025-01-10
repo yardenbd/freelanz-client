@@ -48,5 +48,7 @@ const styles = StyleSheet.create({
     backLink: {
         position: "absolute",
         left: 25,
+        zIndex: 10,
+        top: 50,
     },
 });

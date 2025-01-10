@@ -3,6 +3,7 @@ import React from "react";
 import {
     Keyboard,
     SafeAreaView,
+    Text,
     TouchableWithoutFeedback,
     View,
 } from "react-native";
@@ -12,9 +13,10 @@ import { commonStyles } from "../../scripts/styles";
 const Layout = () => {
     return (
         <SafeAreaView style={commonStyles.safeArea}>
+            <BackwardsBtn />
+
             <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
                 <View>
-                    <BackwardsBtn />
                     <Slot />
                 </View>
             </TouchableWithoutFeedback>

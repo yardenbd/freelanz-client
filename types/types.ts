@@ -1,3 +1,5 @@
+import { CompleteProfileState } from "../app/auth/complete-profile";
+
 export interface ISkillOrStrength {
     id: number;
     he: string;
@@ -30,4 +32,8 @@ export interface User {
     deletedAt: Date;
     skills: ISkillOrStrength[];
     strengths: ISkillOrStrength[];
+}
+
+export interface UpdateUserData extends Partial<CompleteProfileState> {
+    type: string;
 }

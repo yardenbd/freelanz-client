@@ -5,10 +5,22 @@ import { useTranslation } from "react-i18next";
 import { FileUploader } from "../../../components/FileUploader/FileUploader";
 import { PrimaryButton } from "../../../components/PrimaryButton/PrimaryButton";
 import { useSteps } from "../../../context/StepsContext";
+import { useSelector } from "react-redux";
+import { RootState } from "../../../store/store";
 
 const Index = () => {
     const { t } = useTranslation();
     const { nextStep } = useSteps();
+    const user = useSelector((state: RootState) => state.auth.user);
+    if (!user) return null;
+    const renderCvUpload = user.type === "Employee" && (
+        <FileUploader
+            label={t("uploadCv")}
+            subLabel={t("chooseFileOrImage")}
+            onUpload={async (asset) => {}}
+            acceptedTypes={["application/pdf"]}
+        />
+    );
     return (
         <View style={{ flex: 1 }}>
             <Text style={commonStyles.mediumBlackText}>{t("uploadDocs")}</Text>
@@ -16,12 +28,7 @@ const Index = () => {
                 {t("uploadDocs")}
             </Text>
             <View style={styles.fileUploaders}>
-                <FileUploader
-                    label={t("uploadCv")}
-                    subLabel={t("chooseFileOrImage")}
-                    onUpload={async (asset) => {}}
-                    acceptedTypes={["application/pdf"]}
-                />
+                {renderCvUpload}
                 <FileUploader
                     label={t("uploadId")}
                     subLabel={t("chooseImage")}

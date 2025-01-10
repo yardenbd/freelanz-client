@@ -4,15 +4,23 @@ import { BackwardsBtn } from "../BackwardsBtn/BackwardsBtn";
 import { COLORS } from "../../constants/Colors";
 import { useSteps } from "../../context/StepsContext";
 
-export const ProfileProgressBar = () => {
+interface ProfileProgressBarProps {
+    steps: number;
+}
+
+export const ProfileProgressBar: React.FC<ProfileProgressBarProps> = ({
+    steps,
+}) => {
     const { currentStep } = useSteps();
 
-    const stepsToRender = [1, 2, 3, 4, 5].map((step) => (
-        <View
-            key={step}
-            style={[styles.step, step === currentStep && styles.activeStep]}
-        ></View>
-    ));
+    const stepsToRender = Array.from({ length: steps }, (_, i) => i + 1).map(
+        (step) => (
+            <View
+                key={step}
+                style={[styles.step, step === currentStep && styles.activeStep]}
+            ></View>
+        )
+    );
     return <View style={styles.row}>{stepsToRender}</View>;
 };
 

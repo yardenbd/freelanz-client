@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { authenticateWithApple } from "./actions";
+import { authenticateWithApple, updateUser } from "./actions";
 import { User } from "../../../types/types";
 
 interface AuthState {
@@ -39,6 +39,22 @@ const authSlice = createSlice({
             .addCase(authenticateWithApple.rejected, (state, action) => {
                 state.loading = false;
                 state.error = action.error.message || "Authentication failed";
+            });
+        builder
+            .addCase(updateUser.pending, (state) => {
+                state.loading = true;
+                state.error = null;
+            })
+            .addCase(
+                updateUser.fulfilled,
+                (state, action: PayloadAction<User>) => {
+                    state.user = action.payload;
+                    state.loading = false;
+                }
+            )
+            .addCase(updateUser.rejected, (state, action) => {
+                state.loading = false;
+                state.error = action.error.message || "Unable to update user";
             });
     },
 });
