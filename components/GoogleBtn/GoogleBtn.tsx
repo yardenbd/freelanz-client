@@ -3,13 +3,12 @@ import { Pressable } from "react-native";
 import Svg, { G, Path, Defs, ClipPath, Rect } from "react-native-svg";
 import { commonStyles } from "../../scripts/styles";
 import * as AppleAuthentication from "expo-apple-authentication";
+import { SsoButtonProps } from "../AppleBtn/AppleBtn";
 
-interface AppleBtnProps {
-    onAppleSignIn: (
-        credential: AppleAuthentication.AppleAuthenticationCredential
-    ) => void;
-}
-export const GoogleBtn: React.FC<AppleBtnProps> = ({ onAppleSignIn }) => {
+export const GoogleBtn: React.FC<SsoButtonProps> = ({
+    onAppleSignIn,
+    overrideStyle,
+}) => {
     const handleAppleSignIn = async () => {
         try {
             const appleCredential = await AppleAuthentication.signInAsync({
@@ -27,7 +26,10 @@ export const GoogleBtn: React.FC<AppleBtnProps> = ({ onAppleSignIn }) => {
         }
     };
     return (
-        <Pressable style={commonStyles.ssoBtn} onPress={handleAppleSignIn}>
+        <Pressable
+            style={[commonStyles.ssoBtn, overrideStyle && overrideStyle]}
+            onPress={handleAppleSignIn}
+        >
             <Svg width="24" height="24" viewBox="0 0 24 24" fill="none">
                 <G clipPath="url(#clip0_88_29277)">
                     <Path

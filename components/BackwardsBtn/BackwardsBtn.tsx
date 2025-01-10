@@ -6,21 +6,19 @@ import { useSteps } from "../../context/StepsContext";
 
 interface IBackwardsBtnProps {
     cancelStyles?: boolean;
-    fromSteps?: boolean;
+    prevStep?: () => void;
 }
 
 export const BackwardsBtn: React.FC<IBackwardsBtnProps> = ({
     cancelStyles,
-    fromSteps,
+    prevStep,
 }) => {
-    const { prevStep, currentStep } = useSteps();
-
     const router = useRouter();
     return (
         <Pressable
             onPress={() => {
-                // router.back();
-                if (fromSteps) prevStep();
+                router.back();
+                prevStep?.();
             }}
             style={!cancelStyles && styles.backLink}
         >

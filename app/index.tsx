@@ -10,7 +10,7 @@ const Index = () => {
     const router = useRouter();
     useEffect(() => {
         const tie = setTimeout(() => {
-            router.push("/profile/skills");
+            router.push("/auth/complete-profile");
         }, 1000);
         return () => clearTimeout(tie);
     }, []);

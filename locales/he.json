@@ -42,5 +42,8 @@
     "uploadId": "העלה את תעודת הזהות שלך",
     "chooseImage": "בחר תמונה להעלאה...",
     "skillsDescription": "בחר את הכישורים שמתארים בצורה הטובה ביותר את המומחיות שלך.",
-    "strengthsDescription": "בחר את החוזקות שבהן אתה מצטיין."
+    "strengthsDescription": "בחר את החוזקות שבהן אתה מצטיין.",
+    "locationDescription": "הזן את המיקום שלך",
+    "useCurrentLocation": "השתמש במיקום הנוכחי שלך",
+    "searchLocation": "חפש מיקומך"
 }

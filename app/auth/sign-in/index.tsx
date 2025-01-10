@@ -2,6 +2,7 @@ import React from "react";
 import {
     Image,
     Keyboard,
+    Platform,
     SafeAreaView,
     StyleSheet,
     TouchableWithoutFeedback,
@@ -15,20 +16,45 @@ import { PhoneSignIn } from "../../../components/PhoneSignIn/PhoneSignIn";
 import { AppleBtn } from "../../../components/AppleBtn/AppleBtn";
 import * as AppleAuthentication from "expo-apple-authentication";
 import { GoogleBtn } from "../../../components/GoogleBtn/GoogleBtn";
-import { Link } from "expo-router";
+import { Link, useRouter } from "expo-router";
 import { useAppDispatch } from "../../../hooks/hooks";
 import { authenticateWithApple } from "../../../store/features/auth/actions";
 
 const Index = () => {
     const { t } = useTranslation();
     const dispatch = useAppDispatch();
+    const router = useRouter();
 
     const onAppleSignIn = async (
         credential: AppleAuthentication.AppleAuthenticationCredential
     ) => {
         await dispatch(authenticateWithApple(credential));
+        router.push("/auth/complete-profile");
     };
 
+    const renderSSOLogin =
+        Platform.OS === "ios" ? (
+            <View
+                style={{
+                    flexDirection: "row",
+                    width: "100%",
+                    gap: 20,
+                    alignItems: "center",
+                    justifyContent: "center",
+                }}
+            >
+                <AppleBtn
+                    overrideStyle={{ width: "45%" }}
+                    onAppleSignIn={onAppleSignIn}
+                />
+                <GoogleBtn
+                    overrideStyle={{ width: "45%" }}
+                    onAppleSignIn={onAppleSignIn}
+                />
+            </View>
+        ) : (
+            <GoogleBtn onAppleSignIn={onAppleSignIn} />
+        );
     return (
         <SafeAreaView style={commonStyles.safeArea}>
             <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
@@ -56,8 +82,7 @@ const Index = () => {
                             <Text>{t("orSignInWith")}</Text>
                             <View style={styles.dash}></View>
                         </View>
-                        <AppleBtn onAppleSignIn={onAppleSignIn} />
-                        <GoogleBtn onAppleSignIn={onAppleSignIn} />
+                        {renderSSOLogin}
                     </View>
                     <Text style={{ color: COLORS.black, marginTop: "auto" }}>
                         {t("dontHaveAccount")}{" "}

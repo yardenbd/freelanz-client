@@ -6,18 +6,20 @@ import {
     StyleSheet,
     Platform,
     TouchableWithoutFeedback,
-    Keyboard,
 } from "react-native";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import { useTranslation } from "react-i18next";
 import { COLORS } from "../../constants/Colors";
 import Svg, { Path } from "react-native-svg";
 import { ModalComponent } from "../Modal/Modal";
+import { formatInTimeZone } from "date-fns-tz";
 
 interface IDatePickerProps {
     onSelect: (value: string) => void;
     date: string;
 }
+const timeZone = "Asia/Jerusalem";
+
 export const DatePicker: React.FC<IDatePickerProps> = ({ onSelect, date }) => {
     const [showPicker, setShowPicker] = useState(false);
     const { t } = useTranslation();
@@ -25,7 +27,13 @@ export const DatePicker: React.FC<IDatePickerProps> = ({ onSelect, date }) => {
     const handleChange = (event: any, date?: Date) => {
         setShowPicker(Platform.OS === "ios");
         if (date) {
-            onSelect(date.toISOString());
+            const israelTime = formatInTimeZone(
+                new Date(date),
+                timeZone,
+                "yyyy-MM-dd HH:mm:ssXXX"
+            );
+            const splitted = israelTime.split(" ")[0];
+            onSelect(splitted);
         }
     };
 
@@ -38,16 +46,14 @@ export const DatePicker: React.FC<IDatePickerProps> = ({ onSelect, date }) => {
             closeModal={() => setShowPicker(false)}
             visible={showPicker}
         >
-            (
             <DateTimePicker
                 value={date ? new Date(date) : new Date()}
                 mode="date"
                 display={Platform.OS === "ios" ? "spinner" : "default"}
                 onChange={handleChange}
-                maximumDate={new Date()}
                 style={{ width: "100%", margin: "auto" }}
+                maximumDate={new Date()}
             />
-            )
         </ModalComponent>
     );
 
@@ -78,7 +84,6 @@ export const DatePicker: React.FC<IDatePickerProps> = ({ onSelect, date }) => {
                         </Text>
                     </View>
                 </TouchableOpacity>
-
                 {renderDatePicker}
             </View>
         </TouchableWithoutFeedback>

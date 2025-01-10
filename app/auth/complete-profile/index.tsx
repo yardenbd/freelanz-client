@@ -12,9 +12,11 @@ import { Checkbox } from "../../../components/Checkbox/Checkbox";
 import { Link } from "expo-router";
 import * as ImagePicker from "expo-image-picker";
 import { PrimaryButton } from "../../../components/PrimaryButton/PrimaryButton";
+import { useAppDispatch } from "../../../hooks/hooks";
+import { updateUser } from "../../../store/features/auth/actions";
 
 interface IFormDataState {
-    profileImg: null | ImagePicker.ImagePickerAsset;
+    profileImg: null | Partial<ImagePicker.ImagePickerAsset>;
     name: string;
     email: string;
     dateOfBirth: string;
@@ -31,6 +33,7 @@ const Index = () => {
     });
 
     const { t } = useTranslation();
+    const dispatch = useAppDispatch();
 
     const pickImage = async () => {
         const permissionResult =
@@ -52,13 +55,22 @@ const Index = () => {
         });
 
         if (!result.canceled) {
+            const asset = result.assets[0];
             setFormData((prev) => {
-                return { ...prev, profileImg: result.assets[0] };
+                return {
+                    ...prev,
+                    profileImg: {
+                        uri: asset.uri,
+                        name: asset.uri.split("/").pop(),
+                        type: asset.type,
+                    },
+                };
             });
         }
     };
 
     const handleChange = (value: string, propName: keyof IFormDataState) => {
+        console.log(propName, value);
         setFormData((prev) => {
             return { ...prev, [propName]: value };
         });
@@ -68,6 +80,17 @@ const Index = () => {
     ) : (
         <EmptyProfileImage />
     );
+
+    const onPress = async () => {
+        console.log(formData.dateOfBirth);
+        // const data = new FormData();
+        // for (const [key, value] of Object.entries(formData)) {
+        //     if (key === "profileImg") {
+        //         data.append("file", value);
+        //     } else data.append(key, value);
+        // }
+        // await dispatch(updateUser(data));
+    };
     return (
         <View style={[commonStyles.container, { height: "100%" }]}>
             <Text style={commonStyles.authLabel}>{t("completeProfile")}</Text>
@@ -84,26 +107,28 @@ const Index = () => {
             </Pressable>
             <View style={styles.form}>
                 <InputWithLabel
-                    keyboardType="ascii-capable"
+                    keyboardType="default"
                     onChangeText={(value) => handleChange(value, "name")}
                     placeholder={t("name")}
-                    value=""
+                    value={formData.name}
                     errorMessage=""
                     secureTextEntry={false}
                     label={t("name")}
                 />
                 <InputWithLabel
-                    keyboardType="ascii-capable"
+                    keyboardType="default"
                     onChangeText={(value) => handleChange(value, "email")}
                     placeholder={t("email")}
                     label={t("email")}
-                    value=""
+                    value={formData.email}
                     errorMessage=""
                     secureTextEntry={false}
                 />
                 <DatePicker
                     date={formData.dateOfBirth}
-                    onSelect={(value) => handleChange(value, "dateOfBirth")}
+                    onSelect={(value) => {
+                        handleChange(value, "dateOfBirth");
+                    }}
                 />
                 <Dropdown
                     selected={formData.gender}
@@ -123,7 +148,7 @@ const Index = () => {
                     </Text>
                 </View>
             </View>
-            <PrimaryButton label={t("continue")} onPress={() => {}} />
+            <PrimaryButton label={t("continue")} onPress={onPress} />
         </View>
     );
 };

@@ -22,7 +22,7 @@ export const Dropdown: React.FC<IDropdownProps> = ({ selected, onSelect }) => {
     const [open, setIsOpen] = useState<boolean>(false);
     const { t } = useTranslation();
     const itemsToRender = ["Male", "Female"].map((item) => (
-        <Picker.Item key={item} label={item} value={item} />
+        <Picker.Item key={item} label={t(item)} value={item} />
     ));
     const renderPicker = open && (
         <ModalComponent closeModal={() => setIsOpen(false)} visible={open}>

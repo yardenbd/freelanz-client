@@ -11,18 +11,7 @@ const Layout = () => {
         <StepsProvider>
             <SafeAreaView style={commonStyles.safeArea}>
                 <View style={commonStyles.container}>
-                    <View
-                        style={{
-                            display: "flex",
-                            flexDirection: "row",
-                            gap: 20,
-                            marginBottom: 35,
-                            marginTop: 10,
-                        }}
-                    >
-                        <BackwardsBtn cancelStyles fromSteps />
-                        <ProfileProgressBar />
-                    </View>
+                    <TopbarElements />
                     <Slot />
                 </View>
             </SafeAreaView>
@@ -31,3 +20,21 @@ const Layout = () => {
 };
 
 export default Layout;
+
+const TopbarElements: React.FC = () => {
+    const { prevStep } = useSteps();
+    return (
+        <View
+            style={{
+                display: "flex",
+                flexDirection: "row",
+                gap: 20,
+                marginBottom: 35,
+                marginTop: 10,
+            }}
+        >
+            <BackwardsBtn cancelStyles prevStep={prevStep} />
+            <ProfileProgressBar />
+        </View>
+    );
+};

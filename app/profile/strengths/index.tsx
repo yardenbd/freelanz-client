@@ -15,7 +15,7 @@ import { commonStyles } from "../../../scripts/styles";
 import { COLORS } from "../../../constants/Colors";
 
 const Index = () => {
-    const [skills, setSkills] = useState<ISkillOrStrength[]>([]);
+    const [strengths, setStrengths] = useState<ISkillOrStrength[]>([]);
     const [selected, setSelected] = useState<number[]>([]);
     const { t } = useTranslation();
     const currentLang = i18n.language;
@@ -24,9 +24,9 @@ const Index = () => {
         const getSkillsList = async () => {
             try {
                 const response = await apiClient.get<ISkillOrStrength[]>(
-                    `/user/skills?lang=${currentLang}`
+                    `/user/strengths?lang=${currentLang}`
                 );
-                setSkills(response.data);
+                setStrengths(response.data);
             } catch (err) {
                 console.error(err);
             }
@@ -42,7 +42,7 @@ const Index = () => {
         });
     };
 
-    const renderSkills = skills.map((skill) => (
+    const renderStrengths = strengths.map((skill) => (
         <Pressable
             key={skill.id}
             style={() => [
@@ -65,10 +65,10 @@ const Index = () => {
     return (
         <View style={{ flex: 1 }}>
             <Text style={commonStyles.mediumBlackText}>
-                {t("skillsDescription")}
+                {t("strengthsDescription")}
             </Text>
             <ScrollView horizontal={false} contentContainerStyle={styles.list}>
-                {renderSkills}
+                {renderStrengths}
             </ScrollView>
         </View>
     );
