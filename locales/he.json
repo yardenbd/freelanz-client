@@ -45,5 +45,6 @@
     "strengthsDescription": "בחר את החוזקות שבהן אתה מצטיין.",
     "locationDescription": "הזן את המיקום שלך",
     "useCurrentLocation": "השתמש במיקום הנוכחי שלך",
-    "searchLocation": "חפש מיקומך"
+    "searchLocation": "חפש מיקומך",
+    "skip": "דלג"
 }

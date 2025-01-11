@@ -1,8 +1,11 @@
-import { Slot } from "expo-router";
+import { Slot, usePathname } from "expo-router";
 import React from "react";
 import {
+    Button,
     Keyboard,
+    Pressable,
     SafeAreaView,
+    Text,
     TouchableNativeFeedback,
     View,
 } from "react-native";
@@ -12,6 +15,8 @@ import { commonStyles } from "../../scripts/styles";
 import { StepsProvider, useSteps } from "../../context/StepsContext";
 import { useAppSelector } from "../../hooks/hooks";
 import { RootState } from "../../store/store";
+import { COLORS } from "../../constants/Colors";
+import { useTranslation } from "react-i18next";
 
 const Layout = () => {
     return (
@@ -33,12 +38,18 @@ export default Layout;
 const TopbarElements: React.FC = () => {
     const user = useAppSelector((state: RootState) => state.user.user);
     const isUserEmployee = user?.type === "Employee";
-    const { prevStep } = useSteps();
+    const { prevStep, nextStep } = useSteps();
+    const { t } = useTranslation();
+    const pathname = usePathname();
+    if (!user) return null;
+    console.log(pathname);
+
     return (
         <View
             style={{
                 display: "flex",
                 flexDirection: "row",
+                justifyContent: "space-between",
                 gap: 20,
                 marginBottom: 30,
                 marginTop: 10,
@@ -47,6 +58,11 @@ const TopbarElements: React.FC = () => {
         >
             <BackwardsBtn cancelStyles prevStep={prevStep} />
             <ProfileProgressBar steps={isUserEmployee ? 5 : 2} />
+            <Pressable onPress={nextStep}>
+                <Text style={{ color: COLORS.blue, fontSize: 16 }}>
+                    {t("skip")}
+                </Text>
+            </Pressable>
         </View>
     );
 };

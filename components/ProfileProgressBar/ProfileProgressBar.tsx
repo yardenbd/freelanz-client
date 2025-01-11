@@ -31,16 +31,12 @@ export const styles = StyleSheet.create({
         flexDirection: "row",
         justifyContent: "center",
         gap: 10,
-        position: "absolute",
-        left: 0,
-        right: 0,
-        width: "100%",
     },
     step: {
         borderRadius: 5,
         backgroundColor: COLORS.greyBorder,
         height: 5,
-        width: 45,
+        width: 41,
     },
     activeStep: {
         backgroundColor: COLORS.blue,

@@ -31,6 +31,10 @@ export const commonStyles = StyleSheet.create({
         textAlign: "right",
     },
     safeArea: { backgroundColor: COLORS.white, position: "relative" },
+    safeAreaDashboard: {
+        position: "relative",
+        backgroundColor: COLORS.greyDashboard,
+    },
     ssoBtn: {
         width: "100%",
         paddingVertical: 18,
@@ -54,6 +58,12 @@ export const commonStyles = StyleSheet.create({
         display: "flex",
         alignItems: "center",
         height: "100%",
+    },
+    dashboardContainer: {
+        width: "100%",
+        display: "flex",
+        height: "100%",
+        backgroundColor: COLORS.greyDashboard,
     },
     container: {
         width: "100%",
