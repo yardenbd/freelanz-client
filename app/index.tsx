@@ -18,7 +18,7 @@ const Index = () => {
     useEffect(() => {
         const tie = setTimeout(async () => {
             await loadData();
-            router.push("/profile/strengths");
+            router.push("/profile/location");
         }, 1000);
         return () => clearTimeout(tie);
     }, []);

@@ -1,6 +1,11 @@
 import { Slot } from "expo-router";
 import React from "react";
-import { SafeAreaView, View } from "react-native";
+import {
+    Keyboard,
+    SafeAreaView,
+    TouchableNativeFeedback,
+    View,
+} from "react-native";
 import { BackwardsBtn } from "../../components/BackwardsBtn/BackwardsBtn";
 import { ProfileProgressBar } from "../../components/ProfileProgressBar/ProfileProgressBar";
 import { commonStyles } from "../../scripts/styles";
@@ -11,12 +16,14 @@ import { RootState } from "../../store/store";
 const Layout = () => {
     return (
         <StepsProvider>
-            <SafeAreaView style={commonStyles.safeArea}>
-                <View style={commonStyles.container}>
-                    <TopbarElements />
-                    <Slot />
-                </View>
-            </SafeAreaView>
+            <TouchableNativeFeedback onPress={Keyboard.dismiss}>
+                <SafeAreaView style={commonStyles.safeArea}>
+                    <View style={commonStyles.container}>
+                        <TopbarElements />
+                        <Slot />
+                    </View>
+                </SafeAreaView>
+            </TouchableNativeFeedback>
         </StepsProvider>
     );
 };

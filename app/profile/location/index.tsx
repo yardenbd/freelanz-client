@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import {
     View,
@@ -15,6 +15,9 @@ import * as Location from "expo-location";
 import axios from "axios";
 import { COLORS } from "../../../constants/Colors";
 import Svg, { Path } from "react-native-svg";
+import { useAppDispatch } from "../../../hooks/hooks";
+import { updateUser } from "../../../store/features/user/actions";
+import { PrimaryButton } from "../../../components/PrimaryButton/PrimaryButton";
 
 interface LocationPrediction {
     place_id: string;
@@ -34,15 +37,17 @@ const Index = () => {
         latitude: null,
         longitude: null,
     });
-
     const [locationResults, setLocationResults] = useState<
         LocationPrediction[]
     >([]);
-    const [errorMsg, setErrorMsg] = useState<string>("");
+    const [currentLocation, setCurrentLocation] = useState<string>("");
 
     const { t } = useTranslation();
+    const dispatch = useAppDispatch();
 
     const handleUseCurrentLocation = async (): Promise<void> => {
+        setSearchQuery("");
+        setLocationResults([]);
         try {
             const { status } =
                 await Location.requestForegroundPermissionsAsync();
@@ -57,22 +62,18 @@ const Index = () => {
             const currentLocation = await Location.getCurrentPositionAsync({});
             const { latitude, longitude } = currentLocation.coords;
             setCoordinates({ latitude, longitude });
-            Alert.alert(
-                "Current Location",
-                `Latitude: ${latitude}, Longitude: ${longitude}`
-            );
         } catch (error) {
             console.error("Error fetching current location:", error);
             Alert.alert(
                 "Error",
                 "Could not fetch your current location. Please try again."
             );
-        } finally {
         }
     };
 
     const handleSearch = async (query: string): Promise<void> => {
         setSearchQuery(query);
+        setCurrentLocation("");
 
         if (query.length > 2) {
             try {
@@ -96,6 +97,7 @@ const Index = () => {
         }
     };
     const handleSelectLocation = async (placeId: string) => {
+        setLocationResults([]);
         try {
             const response = await axios.get(
                 `https://maps.googleapis.com/maps/api/place/details/json`,
@@ -107,13 +109,37 @@ const Index = () => {
                 }
             );
             const { lat, lng } = response.data.result.geometry.location;
-            console.log(lat, lng);
             setCoordinates({ latitude: lat, longitude: lng });
         } catch (error) {
             console.error("Error fetching location details:", error);
         }
     };
+    const onPress = async () => {
+        if (!coordinates.latitude || !coordinates.longitude) return;
+        await dispatch(
+            updateUser({
+                latitude: coordinates.latitude,
+                longitude: coordinates.longitude,
+            })
+        );
+    };
 
+    const renderCurrentLocation = currentLocation && (
+        <Text style={styles.resultTitle}>{currentLocation}</Text>
+    );
+
+    useEffect(() => {
+        if (!coordinates.latitude || !coordinates.longitude) return;
+        const getCurrentCityName = async () => {
+            const response = await axios.get(
+                `https://maps.googleapis.com/maps/api/geocode/json?latlng=${coordinates.latitude},${coordinates.longitude}&key=${process.env.EXPO_PUBLIC_GOOGLE_API_KEY}`
+            );
+            if (response.data.results[0].formatted_address) {
+                setCurrentLocation(response.data.results[0].formatted_address);
+            }
+        };
+        getCurrentCityName();
+    }, [coordinates]);
     return (
         <View style={{ flex: 1 }}>
             <Text style={commonStyles.mediumBlackText}>
@@ -156,12 +182,14 @@ const Index = () => {
                     </Svg>
                     <Text>{t("useCurrentLocation")}</Text>
                 </Pressable>
+                {renderCurrentLocation}
+
                 <FlatList
                     data={locationResults}
                     keyExtractor={(item) => item.place_id}
                     contentContainerStyle={styles.list}
                     renderItem={({ item }) => (
-                        <TouchableOpacity
+                        <Pressable
                             style={styles.resultItem}
                             onPress={() => handleSelectLocation(item.place_id)}
                         >
@@ -171,10 +199,11 @@ const Index = () => {
                             <Text style={styles.resultTitle}>
                                 {item.structured_formatting.main_text}
                             </Text>
-                        </TouchableOpacity>
+                        </Pressable>
                     )}
                 />
             </View>
+            <PrimaryButton label={t("continue")} onPress={onPress} />
         </View>
     );
 };
@@ -182,6 +211,7 @@ const Index = () => {
 const styles = StyleSheet.create({
     list: {
         alignItems: "flex-end",
+        width: "100%",
     },
     currentLocation: {
         display: "flex",

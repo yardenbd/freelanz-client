@@ -43,4 +43,6 @@ export interface CompleteProfileState {
     type: string;
     skills: number[];
     strengths: number[];
+    latitude: number;
+    longitude: number;
 }
