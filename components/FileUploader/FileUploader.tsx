@@ -10,7 +10,7 @@ interface IFileUploaderProps {
     label: string;
     subLabel: string;
     acceptedTypes: string[];
-    onUpload: (file: DocumentPicker.DocumentPickerAsset) => Promise<void>;
+    onUpload: (file: DocumentPicker.DocumentPickerAsset) => void;
 }
 
 export const FileUploader: React.FC<IFileUploaderProps> = ({
@@ -26,7 +26,7 @@ export const FileUploader: React.FC<IFileUploaderProps> = ({
             });
 
             if (result.assets) {
-                console.log(result.assets[0].mimeType);
+                onUpload(result.assets[0]);
             }
         } catch (error) {
             Alert.alert("Error", "File selection failed.");

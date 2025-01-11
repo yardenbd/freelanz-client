@@ -3,18 +3,25 @@ import { StyleSheet, View, Image } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { useRouter } from "expo-router";
 import Logo from "../assets/images/Logo.svg";
+import { useAppDispatch } from "../hooks/hooks";
+import { loadUser } from "../store/features/user/actions";
 // import { useAppDispatch } from "../utils/hooks";
 // import { loadUser } from "../store/features/auth/actions";
 
 const Index = () => {
     const router = useRouter();
+    const dispatch = useAppDispatch();
+
+    const loadData = async () => {
+        const { payload } = await dispatch(loadUser());
+    };
     useEffect(() => {
-        const tie = setTimeout(() => {
-            router.push("/auth/role");
+        const tie = setTimeout(async () => {
+            await loadData();
+            router.push("/profile/strengths");
         }, 1000);
         return () => clearTimeout(tie);
     }, []);
-    // const dispatch = useAppDispatch();
 
     // useEffect(() => {
     //     const loadData = async () => {

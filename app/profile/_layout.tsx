@@ -24,7 +24,7 @@ const Layout = () => {
 export default Layout;
 
 const TopbarElements: React.FC = () => {
-    const user = useAppSelector((state: RootState) => state.auth.user);
+    const user = useAppSelector((state: RootState) => state.user.user);
     const isUserEmployee = user?.type === "Employee";
     const { prevStep } = useSteps();
     return (
@@ -35,6 +35,7 @@ const TopbarElements: React.FC = () => {
                 gap: 20,
                 marginBottom: 30,
                 marginTop: 10,
+                alignItems: "center",
             }}
         >
             <BackwardsBtn cancelStyles prevStep={prevStep} />

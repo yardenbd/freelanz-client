@@ -13,12 +13,23 @@ import i18n from "../../../i18n";
 import { ISkillOrStrength } from "../../../types/types";
 import { commonStyles } from "../../../scripts/styles";
 import { COLORS } from "../../../constants/Colors";
+import { useAppDispatch, useAppSelector } from "../../../hooks/hooks";
+import { RootState } from "../../../store/store";
+import { updateUser } from "../../../store/features/user/actions";
+import { PrimaryButton } from "../../../components/PrimaryButton/PrimaryButton";
+import { useRouter } from "expo-router";
 
 const Index = () => {
     const [skills, setSkills] = useState<ISkillOrStrength[]>([]);
     const [selected, setSelected] = useState<number[]>([]);
     const { t } = useTranslation();
+    const router = useRouter();
     const currentLang = i18n.language;
+    const dispath = useAppDispatch();
+    const onPress = async () => {
+        await dispath(updateUser({ skills: selected }));
+        router.push("/profile/strengths");
+    };
 
     useEffect(() => {
         const getSkillsList = async () => {
@@ -63,13 +74,14 @@ const Index = () => {
     ));
 
     return (
-        <View style={{ flex: 1 }}>
+        <View style={{ flex: 1, gap: 25 }}>
             <Text style={commonStyles.mediumBlackText}>
                 {t("skillsDescription")}
             </Text>
             <ScrollView horizontal={false} contentContainerStyle={styles.list}>
                 {renderSkills}
             </ScrollView>
+            <PrimaryButton label={t("continue")} onPress={onPress} />
         </View>
     );
 };

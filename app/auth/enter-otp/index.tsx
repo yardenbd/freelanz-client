@@ -17,8 +17,7 @@ import { PrimaryButton } from "../../../components/PrimaryButton/PrimaryButton";
 const Index = () => {
     const { t } = useTranslation();
     return (
-        <View style={commonStyles.container}>
-            {/* <BackwardsBtn /> */}
+        <>
             <View style={{ gap: 10, marginTop: 20 }}>
                 <Text style={commonStyles.authLabel}>{t("enterOtp")}</Text>
                 <Text style={commonStyles.greySubLabel}>
@@ -33,7 +32,7 @@ const Index = () => {
                 </Pressable>
             </View>
             <PrimaryButton label={t("verify")} onPress={() => {}} />
-        </View>
+        </>
     );
 };
 

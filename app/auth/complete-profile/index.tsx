@@ -13,15 +13,8 @@ import { Link } from "expo-router";
 import * as ImagePicker from "expo-image-picker";
 import { PrimaryButton } from "../../../components/PrimaryButton/PrimaryButton";
 import { useAppDispatch } from "../../../hooks/hooks";
-import { updateUser } from "../../../store/features/auth/actions";
-
-export interface CompleteProfileState {
-    profileImg: null | Partial<ImagePicker.ImagePickerAsset>;
-    name: string;
-    email: string;
-    dateOfBirth: string;
-    gender: "Male" | "Female";
-}
+import { updateUser } from "../../../store/features/user/actions";
+import { CompleteProfileState } from "../../../types/types";
 
 const Index = () => {
     const [formData, setFormData] = useState<CompleteProfileState>({
@@ -85,10 +78,16 @@ const Index = () => {
     );
 
     const onPress = async () => {
-        await dispatch(updateUser(formData));
+        const data = new FormData();
+        for (const [key, value] of Object.entries(formData)) {
+            if (key === "profileImg") {
+                data.append("file", value);
+            } else data.append(key, value);
+        }
+        await dispatch(updateUser(data));
     };
     return (
-        <View style={[commonStyles.container, { height: "100%" }]}>
+        <>
             <Text style={commonStyles.authLabel}>{t("completeProfile")}</Text>
             <Pressable style={styles.profileImage} onPress={pickImage}>
                 {renderProfileImgOrAvatar}
@@ -145,7 +144,7 @@ const Index = () => {
                 </View>
             </View>
             <PrimaryButton label={t("continue")} onPress={onPress} />
-        </View>
+        </>
     );
 };
 

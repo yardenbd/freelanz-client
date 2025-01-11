@@ -18,7 +18,7 @@ import * as AppleAuthentication from "expo-apple-authentication";
 import { GoogleBtn } from "../../../components/GoogleBtn/GoogleBtn";
 import { Link, useRouter } from "expo-router";
 import { useAppDispatch } from "../../../hooks/hooks";
-import { authenticateWithApple } from "../../../store/features/auth/actions";
+import { authenticateWithApple } from "../../../store/features/user/actions";
 
 const Index = () => {
     const { t } = useTranslation();
@@ -56,49 +56,40 @@ const Index = () => {
             <GoogleBtn onAppleSignIn={onAppleSignIn} />
         );
     return (
-        <SafeAreaView style={commonStyles.safeArea}>
-            <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
-                <View
-                    style={[
-                        commonStyles.container,
-                        commonStyles.centerContainer,
-                    ]}
-                >
-                    <Image
-                        resizeMode="contain"
-                        source={require("../../../assets/images/LogoCover.png")}
-                        style={styles.logo}
-                    />
-                    <View style={{ gap: 30, width: "100%" }}>
-                        <View style={{ gap: 10, justifyContent: "center" }}>
-                            <Text style={styles.header}>{t("signInText")}</Text>
-                            <Text style={styles.subHeader}>
-                                {t("enterPhoneNumber")}
-                            </Text>
-                        </View>
-                        <PhoneSignIn />
-                        <View style={styles.row}>
-                            <View style={styles.dash}></View>
-                            <Text>{t("orSignInWith")}</Text>
-                            <View style={styles.dash}></View>
-                        </View>
-                        {renderSSOLogin}
-                    </View>
-                    <Text style={{ color: COLORS.black, marginTop: "auto" }}>
-                        {t("dontHaveAccount")}{" "}
-                        <Link
-                            style={{
-                                color: COLORS.blue,
-                                textDecorationLine: "underline",
-                            }}
-                            href={"/"}
-                        >
-                            {t("signUp")}
-                        </Link>
+        <View style={[commonStyles.centerContainer]}>
+            <Image
+                resizeMode="contain"
+                source={require("../../../assets/images/LogoCover.png")}
+                style={styles.logo}
+            />
+            <View style={{ gap: 30, width: "100%" }}>
+                <View style={{ gap: 10, justifyContent: "center" }}>
+                    <Text style={styles.header}>{t("signInText")}</Text>
+                    <Text style={styles.subHeader}>
+                        {t("enterPhoneNumber")}
                     </Text>
                 </View>
-            </TouchableWithoutFeedback>
-        </SafeAreaView>
+                <PhoneSignIn />
+                <View style={styles.row}>
+                    <View style={styles.dash}></View>
+                    <Text>{t("orSignInWith")}</Text>
+                    <View style={styles.dash}></View>
+                </View>
+                {renderSSOLogin}
+            </View>
+            <Text style={{ color: COLORS.black, marginTop: "auto" }}>
+                {t("dontHaveAccount")}{" "}
+                <Link
+                    style={{
+                        color: COLORS.blue,
+                        textDecorationLine: "underline",
+                    }}
+                    href={"/"}
+                >
+                    {t("signUp")}
+                </Link>
+            </Text>
+        </View>
     );
 };
 

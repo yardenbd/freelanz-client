@@ -6,7 +6,7 @@ import Svg, { Path, G, Defs, ClipPath, Rect } from "react-native-svg";
 import { COLORS } from "../../../constants/Colors";
 import { PrimaryButton } from "../../../components/PrimaryButton/PrimaryButton";
 import { useAppDispatch } from "../../../hooks/hooks";
-import { updateUser } from "../../../store/features/auth/actions";
+import { updateUser } from "../../../store/features/user/actions";
 import { useRouter } from "expo-router";
 
 const Index = () => {
@@ -56,7 +56,7 @@ const Index = () => {
         </Pressable>
     ));
     return (
-        <View style={commonStyles.container}>
+        <>
             <Text style={commonStyles.authLabel}>{t("chooseRole")}</Text>
             <Text style={commonStyles.greySubLabel}>
                 {t("roleDescription")}
@@ -64,7 +64,7 @@ const Index = () => {
             <View style={styles.roles}>{rolesToRender}</View>
 
             <PrimaryButton label={t("continue")} onPress={onPress} />
-        </View>
+        </>
     );
 };
 

@@ -13,12 +13,19 @@ import i18n from "../../../i18n";
 import { ISkillOrStrength } from "../../../types/types";
 import { commonStyles } from "../../../scripts/styles";
 import { COLORS } from "../../../constants/Colors";
+import { useAppDispatch } from "../../../hooks/hooks";
+import { updateUser } from "../../../store/features/user/actions";
+import { PrimaryButton } from "../../../components/PrimaryButton/PrimaryButton";
 
 const Index = () => {
     const [strengths, setStrengths] = useState<ISkillOrStrength[]>([]);
     const [selected, setSelected] = useState<number[]>([]);
     const { t } = useTranslation();
     const currentLang = i18n.language;
+    const dispath = useAppDispatch();
+    const onPress = async () => {
+        await dispath(updateUser({ strengths: selected }));
+    };
 
     useEffect(() => {
         const getSkillsList = async () => {
@@ -63,13 +70,14 @@ const Index = () => {
     ));
 
     return (
-        <View style={{ flex: 1 }}>
+        <View style={{ flex: 1, gap: 25 }}>
             <Text style={commonStyles.mediumBlackText}>
                 {t("strengthsDescription")}
             </Text>
             <ScrollView horizontal={false} contentContainerStyle={styles.list}>
                 {renderStrengths}
             </ScrollView>
+            <PrimaryButton label={t("continue")} onPress={onPress} />
         </View>
     );
 };

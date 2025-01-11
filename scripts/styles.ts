@@ -30,7 +30,7 @@ export const commonStyles = StyleSheet.create({
         borderRadius: 10,
         textAlign: "right",
     },
-    safeArea: { backgroundColor: COLORS.white },
+    safeArea: { backgroundColor: COLORS.white, position: "relative" },
     ssoBtn: {
         width: "100%",
         paddingVertical: 18,
@@ -53,6 +53,7 @@ export const commonStyles = StyleSheet.create({
         width: "100%",
         display: "flex",
         alignItems: "center",
+        height: "100%",
     },
     container: {
         width: "100%",

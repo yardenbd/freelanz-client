@@ -29,7 +29,12 @@ export const styles = StyleSheet.create({
         display: "flex",
         alignItems: "center",
         flexDirection: "row",
+        justifyContent: "center",
         gap: 10,
+        position: "absolute",
+        left: 0,
+        right: 0,
+        width: "100%",
     },
     step: {
         borderRadius: 5,

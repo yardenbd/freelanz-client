@@ -1,4 +1,4 @@
-import { CompleteProfileState } from "../app/auth/complete-profile";
+import * as ImagePicker from "expo-image-picker";
 
 export interface ISkillOrStrength {
     id: number;
@@ -34,6 +34,13 @@ export interface User {
     strengths: ISkillOrStrength[];
 }
 
-export interface UpdateUserData extends Partial<CompleteProfileState> {
+export interface CompleteProfileState {
+    profileImg: null | Partial<ImagePicker.ImagePickerAsset>;
+    name: string;
+    email: string;
+    dateOfBirth: string;
+    gender: "Male" | "Female";
     type: string;
+    skills: number[];
+    strengths: number[];
 }

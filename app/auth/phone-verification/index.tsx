@@ -9,7 +9,7 @@ const Index = () => {
     const [phoneNum, setPhoneNum] = useState<string>("");
     const { t } = useTranslation();
     return (
-        <View style={[commonStyles.container, { gap: 20 }]}>
+        <View style={{ gap: 20, flex: 1 }}>
             <Text style={commonStyles.authLabel}>{t("phoneVerification")}</Text>
             <InputWithLabel
                 keyboardType="decimal-pad"
