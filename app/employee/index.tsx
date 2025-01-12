@@ -10,6 +10,7 @@ import Animated, {
     useAnimatedStyle,
     withTiming,
 } from "react-native-reanimated";
+import { SwipeableCardList } from "../../components/SwipeableCardList/SwipeableCardList";
 
 export default function Index() {
     const position = useSharedValue(0);
@@ -34,9 +35,7 @@ export default function Index() {
     return (
         <SafeAreaView>
             <GestureHandlerRootView>
-                <GestureDetector gesture={flingGesture}>
-                    <Animated.View style={[styles.box, animatedStyle]} />
-                </GestureDetector>
+                <SwipeableCardList />
             </GestureHandlerRootView>
         </SafeAreaView>
     );

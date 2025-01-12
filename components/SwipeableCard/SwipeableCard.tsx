@@ -1,81 +1,110 @@
-import React, { FC } from "react";
-import { View, Text, StyleSheet, Dimensions } from "react-native";
+import React from "react";
+import { StyleSheet, Text, Dimensions } from "react-native";
+import {
+    PanGestureHandler,
+    PanGestureHandlerGestureEvent,
+} from "react-native-gesture-handler";
 import Animated, {
+    useAnimatedGestureHandler,
+    useSharedValue,
     useAnimatedStyle,
     withSpring,
-    useSharedValue,
     withTiming,
+    runOnJS,
 } from "react-native-reanimated";
-import {
-    GestureHandlerRootView,
-    PanGestureHandler,
-} from "react-native-gesture-handler";
 
-const { width } = Dimensions.get("window");
+type SwipeableCardProps = {
+    onSwipeRight: () => void;
+    onSwipeLeft: () => void;
+    name: string;
+    title: string;
+    location: string;
+    date: string;
+    budget: string;
+    image: string;
+    bg: string;
+};
 
-interface SwipeableCardProps {
-    item: string;
-    onSwipe: (direction: boolean) => void;
-}
+type ContextType = {
+    startX: number;
+};
 
-export const SwipeableCard: FC<SwipeableCardProps> = ({ item, onSwipe }) => {
+export const SwipeableCard: React.FC<SwipeableCardProps> = ({
+    onSwipeRight,
+    onSwipeLeft,
+    bg,
+}) => {
     const translateX = useSharedValue(0);
-    const rotate = useSharedValue(0);
+    const opacity = useSharedValue(1); // For smooth fading out
+    const SCREEN_WIDTH = Dimensions.get("window").width;
 
-    // Gesture event handler
-    const gestureHandler = (event: any) => {
-        translateX.value = event.translationX;
-        console.log("translateX", translateX);
-        rotate.value = (event.translationX / width) * 30; // Rotation effect
-    };
+    // Gesture Handler Logic
+    const gestureHandler = useAnimatedGestureHandler<
+        PanGestureHandlerGestureEvent,
+        ContextType
+    >({
+        onStart: (_, ctx) => {
+            ctx.startX = translateX.value;
+        },
+        onActive: (event, ctx) => {
+            translateX.value = ctx.startX + event.translationX;
+        },
+        onEnd: () => {
+            if (translateX.value > SCREEN_WIDTH / 3) {
+                // Swiped Right
+                translateX.value = withTiming(SCREEN_WIDTH, { duration: 300 });
+                opacity.value = withTiming(0, { duration: 0 }, () => {
+                    runOnJS(onSwipeRight)();
+                });
+            } else if (translateX.value < -SCREEN_WIDTH / 3) {
+                // Swiped Left
+                translateX.value = withTiming(-SCREEN_WIDTH, { duration: 300 });
+                opacity.value = withTiming(0, { duration: 0 }, () => {
+                    runOnJS(onSwipeLeft)();
+                });
+            } else {
+                // Reset position
+                translateX.value = withSpring(0);
+            }
+        },
+    });
 
-    // Gesture end handler
-    const gestureHandlerEnd = (event: any) => {
-        if (event.translationX > 100) {
-            translateX.value = withSpring(width); // Swipe Right
-            onSwipe(true);
-        } else if (event.translationX < -100) {
-            translateX.value = withSpring(-width); // Swipe Left
-            onSwipe(false);
-        } else {
-            translateX.value = withSpring(0); // Reset position
-            rotate.value = withSpring(0); // Reset rotation
-        }
-    };
-
+    // Animated Styles for Movement and Opacity
     const animatedStyle = useAnimatedStyle(() => ({
-        transform: [
-            { translateX: withSpring(translateX.value) }, // Apply X translation
-            { rotate: `${rotate.value}deg` }, // Apply rotation
-        ],
+        transform: [{ translateX: translateX.value }],
+        opacity: opacity.value,
     }));
 
     return (
-        <PanGestureHandler
-            onGestureEvent={gestureHandler}
-            onHandlerStateChange={gestureHandlerEnd}
-        >
-            <Animated.View style={[styles.card, animatedStyle]}>
-                <Text style={styles.cardText}>{item}</Text>
+        <PanGestureHandler onGestureEvent={gestureHandler}>
+            <Animated.View
+                style={[
+                    styles.card,
+                    animatedStyle,
+                    {
+                        backgroundColor: bg,
+                    },
+                ]}
+            >
+                <Text style={styles.text}>Swipe Me!</Text>
             </Animated.View>
         </PanGestureHandler>
     );
 };
+
 const styles = StyleSheet.create({
     card: {
-        position: "absolute",
-        width: "40%",
+        borderRadius: 35,
+        padding: 15,
         height: 200,
-        backgroundColor: "white",
-        borderRadius: 10,
-        borderWidth: 1,
-        borderColor: "#ddd",
+        width: "100%",
+        position: "absolute",
         justifyContent: "center",
         alignItems: "center",
-        elevation: 5,
     },
-    cardText: {
-        fontSize: 20,
+    text: {
+        color: "#fff",
+        fontSize: 18,
         fontWeight: "bold",
     },
 });
