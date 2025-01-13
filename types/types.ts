@@ -46,3 +46,39 @@ export interface CompleteProfileState {
     latitude: number;
     longitude: number;
 }
+
+export interface IJob {
+    ID: number;
+    title: string;
+    tools_required: string;
+    instructions: string;
+    description: string;
+    employee_amount: number;
+    payment: number;
+    longitude: number;
+    latitude: number;
+    address: string;
+    status: string;
+    date_start: string;
+    date_end: string;
+    skills: ISkillOrStrength[];
+    strength: ISkillOrStrength[];
+    user: User;
+    user_id: number;
+}
+
+export interface JobRecommendation {
+    id: number;
+    jobTitle: string;
+    jobPayment: number;
+    jobAddress: string;
+    distance: number;
+    matchingSkills: number;
+    totalJobSkills: number;
+    matchingStrengths: number;
+    totalJobStrengths: number;
+    jobSkills: string;
+    jobStrengths: string;
+    userName: string;
+    jobDateStart: string;
+}

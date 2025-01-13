@@ -1,41 +1,33 @@
-import { SafeAreaView, StyleSheet } from "react-native";
-import {
-    Gesture,
-    GestureDetector,
-    Directions,
-    GestureHandlerRootView,
-} from "react-native-gesture-handler";
-import Animated, {
-    useSharedValue,
-    useAnimatedStyle,
-    withTiming,
-} from "react-native-reanimated";
+import { Alert, SafeAreaView, StyleSheet } from "react-native";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { SwipeableCardList } from "../../components/SwipeableCardList/SwipeableCardList";
+import { useEffect, useState } from "react";
+import { JobRecommendation } from "../../types/types";
+import { apiClient } from "../../apiClient";
 
 export default function Index() {
-    const position = useSharedValue(0);
-    const flingGesture = Gesture.Fling()
-        .direction(Directions.RIGHT)
-        .onStart((e) => {
-            position.value = withTiming(position.value + 100, {
-                duration: 100,
-            });
-        })
-        .direction(Directions.LEFT)
-        .onStart((e) => {
-            position.value = withTiming(position.value - 100, {
-                duration: 100,
-            });
-        });
+    const [jobs, setJobs] = useState<JobRecommendation[]>([]);
+    const getJobs = async () => {
+        try {
+            const response = await apiClient.get<{ jobs: JobRecommendation[] }>(
+                "/job"
+            );
+            setJobs(response.data.jobs);
+        } catch (err) {
+            Alert.alert("Unable to find jobs");
+        }
+    };
 
-    const animatedStyle = useAnimatedStyle(() => ({
-        transform: [{ translateX: position.value }],
-    }));
-
+    const onRemove = (id: number) => {
+        setJobs((prevJobs) => prevJobs.filter((job) => job.id !== id));
+    };
+    useEffect(() => {
+        getJobs();
+    }, []);
     return (
         <SafeAreaView>
             <GestureHandlerRootView>
-                <SwipeableCardList />
+                <SwipeableCardList jobs={jobs} onRemove={onRemove} />
             </GestureHandlerRootView>
         </SafeAreaView>
     );

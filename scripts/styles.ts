@@ -79,4 +79,12 @@ export const commonStyles = StyleSheet.create({
         fontWeight: 700,
         textAlign: "center",
     },
+    ellipse: {
+        paddingHorizontal: 18,
+        paddingVertical: 7,
+        borderRadius: 50,
+        flexDirection: "row",
+        gap: 10,
+        alignSelf: "flex-end",
+    },
 });

@@ -46,5 +46,7 @@
     "locationDescription": "הזן את המיקום שלך",
     "useCurrentLocation": "השתמש במיקום הנוכחי שלך",
     "searchLocation": "חפש מיקומך",
-    "skip": "דלג"
+    "skip": "דלג",
+    "details": "פרטים",
+    "budget": "תקציב:"
 }
