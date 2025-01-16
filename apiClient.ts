@@ -7,6 +7,7 @@ import axios, {
 import { config } from "./config";
 import { getToken, saveToken } from "./secureStorage";
 import { Alert } from "react-native";
+import { router } from "expo-router";
 
 export const apiClient = axios.create({
     baseURL: config.baseURL, // Replace with your backend URL
@@ -40,15 +41,17 @@ apiClient.interceptors.response.use(
     async (error) => {
         const originalRequest = error.config;
         if (error.response?.status === 401 && !originalRequest._retry) {
-            originalRequest._retry = true; // Avoid infinite loop
+            originalRequest._retry = true;
 
             try {
                 const refreshToken = await getToken("refreshToken");
                 if (!refreshToken) Alert.alert("Unable to authenticate");
-                const { data } = await apiClient.post("/auth/refresh-token", {
-                    refreshToken,
-                });
-
+                const { data, status } = await apiClient.post(
+                    "/auth/refresh-token",
+                    {
+                        refreshToken,
+                    }
+                );
                 saveToken("accessToken", data.accessToken);
                 saveToken("refreshToken", data.refreshToken);
 
@@ -56,6 +59,7 @@ apiClient.interceptors.response.use(
                 return apiClient(originalRequest);
             } catch (refreshError) {
                 console.error("Token refresh failed:", refreshError);
+                router.replace("/auth/sign-in");
                 return Promise.reject(refreshError);
             }
         }

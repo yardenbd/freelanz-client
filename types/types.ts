@@ -81,4 +81,5 @@ export interface JobRecommendation {
     jobStrengths: string;
     userName: string;
     jobDateStart: string;
+    bg: string;
 }
