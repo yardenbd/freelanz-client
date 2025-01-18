@@ -17,10 +17,15 @@ import { formatInTimeZone } from "date-fns-tz";
 interface IDatePickerProps {
     onSelect: (value: string) => void;
     date: string;
+    label: string;
 }
 const timeZone = "Asia/Jerusalem";
 
-export const DatePicker: React.FC<IDatePickerProps> = ({ onSelect, date }) => {
+export const DatePicker: React.FC<IDatePickerProps> = ({
+    onSelect,
+    date,
+    label,
+}) => {
     const [showPicker, setShowPicker] = useState(false);
     const { t } = useTranslation();
 
@@ -60,7 +65,7 @@ export const DatePicker: React.FC<IDatePickerProps> = ({ onSelect, date }) => {
     return (
         <TouchableWithoutFeedback onPress={dismissKeyboardAndPicker}>
             <View style={styles.container}>
-                <Text style={styles.label}>{t("dateOfBirth")}</Text>
+                <Text style={styles.label}>{label}</Text>
                 <TouchableOpacity
                     onPress={() => {
                         setShowPicker(true);

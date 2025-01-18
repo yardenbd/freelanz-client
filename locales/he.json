@@ -50,5 +50,12 @@
     "details": "פרטים",
     "budget": "תקציב:",
     "welcomeBack": "ברוך שובך",
-    "letsFindYourDreamJob": "בואו נמצא את עבודת החלומות שלכם!"
+    "letsFindYourDreamJob": "בואו נמצא את\n  עבודת החלומות שלכם!",
+    "filters": "העדפות",
+    "allFilters": "כל העדפות",
+    "clearAllFilters": "נקה הכל",
+    "date": "תאריך",
+    "budgetRange": "טווח שכר",
+    "kmAway": "מרחק בק״מ",
+    "showResults": "הראה תוצאות"
 }

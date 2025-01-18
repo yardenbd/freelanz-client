@@ -83,3 +83,8 @@ export interface JobRecommendation {
     jobDateStart: string;
     bg: string;
 }
+export interface FilterState {
+    date: string;
+    budget: [number, number];
+    range: number;
+}

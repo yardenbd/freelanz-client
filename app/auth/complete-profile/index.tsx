@@ -15,9 +15,13 @@ import { PrimaryButton } from "../../../components/PrimaryButton/PrimaryButton";
 import { useAppDispatch } from "../../../hooks/hooks";
 import { updateUser } from "../../../store/features/user/actions";
 import { CompleteProfileState } from "../../../types/types";
+type FormDataState = Pick<
+    CompleteProfileState,
+    "email" | "dateOfBirth" | "gender" | "name" | "profileImg"
+>;
 
 const Index = () => {
-    const [formData, setFormData] = useState<CompleteProfileState>({
+    const [formData, setFormData] = useState<FormDataState>({
         email: "",
         name: "",
         profileImg: null,
@@ -124,6 +128,7 @@ const Index = () => {
                     onSelect={(value) => {
                         handleChange(value, "dateOfBirth");
                     }}
+                    label={t("dateOfBirth")}
                 />
                 <Dropdown
                     selected={formData.gender}
